@@ -35,10 +35,13 @@ async def on_message(message):
                     return
 
                 # Nový způsob volání (nejstabilnější)
-                response = client_gemini.models.generate_content(
-                    model='gemini-1.5-flash',
-                    contents=user_query
-                )
+             # Původní: client_gemini = genai.Client(api_key=GEMINI_API_KEY)
+
+# Nový a neprůstřelný (přidáváme vertex_ai=False a vynucujeme v1):
+client_gemini = genai.Client(
+    api_key=GEMINI_API_KEY,
+    http_options={'api_version': 'v1'}
+)
                 
                 await message.reply(response.text)
 
