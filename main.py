@@ -1,7 +1,7 @@
 import discord
 import os
 import poe
-
+poe_client = poe.Client(TOKEN_POE)
 TOKEN_DISCORD = os.getenv("DISCORD_TOKEN")
 TOKEN_POE = os.getenv("POE_TOKEN")
 BOT_NA_POE = os.getenv("POE_BOT_NAME")
@@ -22,7 +22,7 @@ async def on_message(message):
     if client.user.mentioned_in(message):
         async with message.channel.typing():
             try:
-                poe_client = poe.Client(TOKEN_POE)
+                
                 user_query = message.content.replace(f'<@!{client.user.id}>', '').replace(f'<@{client.user.id}>', '').strip()
                 
                 # Opravené volání Poe API
