@@ -6,7 +6,7 @@ from google import genai
 TOKEN_DISCORD = os.getenv("DISCORD_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_KEY")
 
-# Nastavení klienta (úplně základní, bez speciálních opcí)
+# Nastavení klienta
 client_gemini = genai.Client(api_key=GEMINI_API_KEY)
 
 intents = discord.Intents.default()
@@ -15,7 +15,7 @@ client_discord = discord.Client(intents=intents)
 
 @client_discord.event
 async def on_ready():
-    print(f'Bot {client_discord.user} je připraven!')
+    print(f'Bot {client_discord.user} je připraven a online!')
 
 @client_discord.event
 async def on_message(message):
@@ -27,18 +27,17 @@ async def on_message(message):
             user_query = message.content.replace(f'<@!{client_discord.user.id}>', '').replace(f'<@{client_discord.user.id}>', '').strip()
             
             if not user_query:
-                await message.reply("Ahoj!")
+                await message.reply("Ahoj! Zeptej se mě na něco.")
                 return
 
             try:
-                # Použijeme jen jeden, nejnovější název modelu
-# Změň název modelu na tenhle:
-response = client_gemini.models.generate_content(
-    model='gemini-2.0-flash-lite', 
-    contents=user_query
-)            await message.reply(response.text)
+                # Používáme model LITE, který máš v logu jako dostupný
+                response = client_gemini.models.generate_content(
+                    model='gemini-2.0-flash-lite', 
+                    contents=user_query
+                )
+                await message.reply(response.text)
             except Exception as e:
-                # Tohle nám do Discordu vypíše PŘESNĚ, co se Googlu nelíbí
                 print(f"Chyba: {e}")
                 await message.reply(f"Google vrátil chybu: {e}")
 
