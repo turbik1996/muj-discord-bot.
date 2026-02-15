@@ -1,6 +1,6 @@
 import discord
 import os
-from poe_api_wrapper import Client
+from poe_api_wrapper import PoeApi
 
 # Načtení tajných údajů z nastavení hostingu
 TOKEN_DISCORD = os.getenv("DISCORD_TOKEN")
@@ -11,7 +11,7 @@ BOT_NA_POE = os.getenv("POE_BOT_NAME", "ChatGPT")
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-
+poe_client = PoeApi(TOKEN_POE)
 @client.event
 async def on_ready():
     print(f'Bot {client.user} je online a připraven na Koyebu!')
@@ -27,7 +27,7 @@ async def on_message(message):
         async with message.channel.typing():
             try:
                 # Připojení k Poe
-                poe_client = Client(TOKEN_POE)
+                
                 odpoved = ""
                 
                 # Očištění zprávy od zmínky bota
