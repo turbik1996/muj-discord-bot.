@@ -1,6 +1,6 @@
 import discord
 import os
-from poe_api import Client
+from poe_api_wrapper import Client
 
 # Načtení tajných údajů z nastavení hostingu
 TOKEN_DISCORD = os.getenv("DISCORD_TOKEN")
