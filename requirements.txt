@@ -1,2 +1,3 @@
 discord
 poe-api-wrapper
+from poe_api_wrapper import Client
