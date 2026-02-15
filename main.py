@@ -7,7 +7,10 @@ TOKEN_DISCORD = os.getenv("DISCORD_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_KEY")
 
 # Nastavení nového Gemini klienta
-client_gemini = genai.Client(api_key=GEMINI_API_KEY)
+client_gemini = genai.Client(
+    api_key=GEMINI_API_KEY,
+    http_options={'api_version': 'v1'}
+)
 
 intents = discord.Intents.default()
 intents.message_content = True
