@@ -1,2 +1,2 @@
 discord.py
-poe-api
+google-generativeai
