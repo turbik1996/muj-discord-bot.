@@ -38,15 +38,22 @@ async def on_message(message):
                     return
 
                 # Volání Gemini
-                response = client_gemini.models.generate_content(
-                    model='gemini-1.5-flash',
-                    contents=user_query
-                )
+                # Seznam modelů, které zkusíme postupně
+                models_to_try = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-pro']
+                response = None
                 
-                await message.reply(response.text)
-
-            except Exception as e:
-                print(f"Chyba: {e}")
-                await message.reply(f"Omlouvám se, nastala chyba při generování: {e}")
-
-client_discord.run(TOKEN_DISCORD)
+                for model_name in models_to_try:
+                    try:
+                        response = client_gemini.models.generate_content(
+                            model=model_name,
+                            contents=user_query
+                        )
+                        if response:
+                            break # Pokud se to povedlo, vyskočíme z cyklu
+                    except:
+                        continue # Pokud tento model nefunguje, zkusíme další
+                
+                if response:
+                    await message.reply(response.text)
+                else:
+                    await message.reply("Bohužel ani jeden z modelů (Flash, Pro) neodpovídá. Zkontroluj prosím limity v Google AI Studio.")
