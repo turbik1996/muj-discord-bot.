@@ -1,2 +1,2 @@
 discord
-poe-api
+poe-api-wrapper
