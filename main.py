@@ -32,10 +32,10 @@ async def on_message(message):
 
             try:
                 # Použijeme jen jeden, nejnovější název modelu
-                response = client_gemini.models.generate_content(
-                    model='gemini-2.0-flash', 
-                    contents=user_query
-                )
+            response = client_gemini.models.generate_content(
+    model='gemini-1.5-flash', 
+    contents=user_query
+)
                 await message.reply(response.text)
             except Exception as e:
                 # Tohle nám do Discordu vypíše PŘESNĚ, co se Googlu nelíbí
