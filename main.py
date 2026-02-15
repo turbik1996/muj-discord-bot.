@@ -6,9 +6,20 @@ import google.generativeai as genai
 TOKEN_DISCORD = os.getenv("DISCORD_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_KEY")
 
-# Nastavení Gemini
+# Nastavení Gemini - zkusíme nejstabilnější verzi
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-pro')
+
+try:
+    # Tato varianta 'gemini-pro' by měla vyřešit chybu 404
+    model = genai.GenerativeModel('gemini-pro')
+    print("Model gemini-pro nastaven.")
+except Exception as e:
+    print(f"Nepodařilo se nastavit gemini-pro, zkouším alternativu: {e}")
+    model = genai.GenerativeModel('models/gemini-pro')
+
+# Tady pokračuje zbytek tvého kódu...
+intents = discord.Intents.default()
+# ... atd.
 
 intents = discord.Intents.default()
 intents.message_content = True
