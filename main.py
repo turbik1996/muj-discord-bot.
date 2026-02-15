@@ -2,11 +2,11 @@ import discord
 import os
 from google import genai
 
-# Načtení tokenů
+# Načtení tokenů z prostředí
 TOKEN_DISCORD = os.getenv("DISCORD_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_KEY")
 
-# Nastavení klienta
+# Inicializace Gemini klienta
 client_gemini = genai.Client(api_key=GEMINI_API_KEY)
 
 intents = discord.Intents.default()
@@ -31,14 +31,14 @@ async def on_message(message):
                 return
 
             try:
-                # Používáme model LITE, který máš v logu jako dostupný
-            response = client_gemini.models.generate_content(
-    model='gemini-1.5-flash', 
-    contents=user_query
-)
+                # Zkusíme stabilnější model 1.5 Flash
+                response = client_gemini.models.generate_content(
+                    model='gemini-1.5-flash', 
+                    contents=user_query
+                )
                 await message.reply(response.text)
             except Exception as e:
-                print(f"Chyba: {e}")
-                await message.reply(f"Google vrátil chybu: {e}")
+                print(f"Chyba při komunikaci: {e}")
+                await message.reply(f"Google vrátil chybu (pravděpodobně limity): {e}")
 
 client_discord.run(TOKEN_DISCORD)
