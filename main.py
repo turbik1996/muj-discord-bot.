@@ -1,23 +1,19 @@
 import discord
 import os
 import google.generativeai as genai
+from google.generativeai.types import RequestOptions
 
 # Načtení tokenů
 TOKEN_DISCORD = os.getenv("DISCORD_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_KEY")
 
-# Nastavení Gemini - zkusíme nejstabilnější verzi
+# Nastavení Gemini s vynucením stabilní verze v1
 genai.configure(api_key=GEMINI_API_KEY)
 
-try:
-    # Tato varianta 'gemini-pro' by měla vyřešit chybu 404
-    model = genai.GenerativeModel('gemini-pro')
-    print("Model gemini-pro nastaven.")
-except Exception as e:
-    print(f"Nepodařilo se nastavit gemini-pro, zkouším alternativu: {e}")
-    model = genai.GenerativeModel('models/gemini-pro')
+# Tady je ta změna - vytvoříme model, ale při generování mu vnutíme stabilní verzi
+model = genai.GenerativeModel('gemini-1.5-flash')
 
-# Tady pokračuje zbytek tvého kódu...
+# ... zbytek kódu (intents, client) zůstává stejný ...
 intents = discord.Intents.default()
 # ... atd.
 
@@ -45,7 +41,8 @@ async def on_message(message):
                     return
 
                 # Generování odpovědi
-                response = model.generate_content(user_query)
+               # Vynucení verze v1 při každém dotazu
+response = model.generate_content(user_query, request_options=RequestOptions(api_version='v1'))
                 await message.reply(response.text)
 
             except Exception as e:
